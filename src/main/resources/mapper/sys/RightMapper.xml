@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liuchikit.mapper.sys.RightMapper" >
+
+    <select id="queryRights"  parameterType="java.util.Map" resultType="Right">
+        SELECT DISTINCT rig.*
+        FROM TB_USER u,TB_USER_ROLE ur,TB_ROLE role,TB_ROLE_RIGHT rr,TB_RIGHT rig
+        WHERE u.ID = ur.USER_ID
+        AND ur.ROLE_ID = role.ID
+        AND role.ID = rr.ROLE_ID
+        AND rr.RIGHT_ID = rig.ID
+        <if test="userId != null">
+            AND u.ID = #{userId}
+        </if>
+        <if test="rightType != null">
+            AND rig.RIGHT_type = #{rightType}
+        </if>
+        <if test="level != null">
+            AND rig.LEVEL = #{level}
+        </if>
+        <if test="pid != null">
+            AND rig.PID = #{pid}
+        </if>
+        ORDER BY rig.SORT ASC
+    </select>
+
+</mapper>
