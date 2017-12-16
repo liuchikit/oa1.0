@@ -10,22 +10,23 @@
     <!-- Shiro's main business-tier object for web-enabled applications -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="loginRealm" />
-        <property name="cacheManager" ref="cacheManager" />
+        <property name="cacheManager" ref="memoryConstrainedCacheManager" />
     </bean>
 
     <!-- 項目自定义的Realm -->
     <bean id="loginRealm" class="com.liuchikit.realm.LoginRealm">
-        <property name="cacheManager" ref="cacheManager" />
+        <property name="cacheManager" ref="memoryConstrainedCacheManager" />
     </bean>
 
     <!-- Shiro Filter -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager" />
-        <property name="loginUrl" value="/jsp/login.jsp" />
-        <property name="successUrl" value="/jsp/home.jsp" />
-        <property name="unauthorizedUrl" value="/jsp/login.jsp" />
+        <property name="loginUrl" value="/toLogin" />
+        <property name="successUrl" value="/home" />
+        <property name="unauthorizedUrl" value="/toLogin" />
         <property name="filterChainDefinitions">
             <value>
+                /toLogin = anon
                 /login = anon
                 /static/** = anon
                 /home = authc
@@ -36,7 +37,7 @@
     </bean>
 
     <!-- 用户授权信息Cache -->
-    <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
+    <bean id="memoryConstrainedCacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
 
     <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />

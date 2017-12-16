@@ -15,6 +15,7 @@ import com.liuchikit.vo.res.BaseResponse;
 import com.liuchikit.vo.res.sys.RoleResponse;
 import com.liuchikit.vo.res.sys.right.RightResponse;
 import com.liuchikit.vo.res.sys.user.UserResponse;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -92,9 +93,8 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long> implements UserS
      * @return
      */
     @Override
-    @CachePut(value = "redis",key = "'user:save' + #request.account")
+    @CachePut(value = "redis",key = "'user:' + #request.id")
     public BaseResponse save(UserSaveOrUpdateRequest request) {
-        System.out.println("save");
         User user = new User();
         ConvertUtil.objectToObject(request,user,true,true,true);
         return save(user);
@@ -107,8 +107,8 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long> implements UserS
      * @return
      */
     @Override
+    @CachePut(value = "redis",key = "'user:' + #request.id")
     public BaseResponse update(UserSaveOrUpdateRequest request) {
-        System.out.println("update");
         User user = new User();
         ConvertUtil.objectToObject(request,user,true,false,true);
         return update(user);
@@ -121,15 +121,14 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long> implements UserS
      * @return
      */
     @Override
+    @CacheEvict(value = "redis",key = "'user:' + #id")
     public BaseResponse delete(Long id) {
-        System.out.println("delete");
         return deleteById(id);
     }
 
     @Override
-    @Cacheable(value = "redis",key = "'user:getResById' + #id")
+    @Cacheable(value = "redis",key = "'user:' + #id")
     public BaseResponse getResById(Long id) {
-        System.out.println("getResById");
         User user = getById(id);
         if(user != null){
            UserResponse response = new UserResponse();
