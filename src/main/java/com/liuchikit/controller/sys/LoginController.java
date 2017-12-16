@@ -28,9 +28,13 @@ public class LoginController {
     @Resource
     private UserService userService;
 
+    @RequestMapping(value = "/toLogin",method = RequestMethod.GET)
+    public ModelAndView toLogin(){
+        return new ModelAndView("login");
+    }
+
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public BaseResponse login(LoginRequest request,HttpServletRequest servletRequest){
-        /*return userService.login(request,servletRequest);*/
+    public BaseResponse login(LoginRequest request){
         UsernamePasswordToken token = new UsernamePasswordToken(request.getAccount(),request.getPassword());
         Subject currentUser = SecurityUtils.getSubject();
         if(!currentUser.isAuthenticated()){
@@ -42,7 +46,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/home",method = RequestMethod.GET)
-    public ModelAndView home(HttpServletRequest request){
+    public ModelAndView home(){
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession();
         User user = (User)session.getAttribute("user");
