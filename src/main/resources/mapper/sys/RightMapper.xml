@@ -5,12 +5,13 @@
     <select id="queryRights"  parameterType="java.util.Map" resultType="Right">
         SELECT DISTINCT rig.*
         FROM TB_USER u,TB_USER_ROLE ur,TB_ROLE role,TB_ROLE_RIGHT rr,TB_RIGHT rig
-        WHERE u.ID = ur.USER_ID
-        AND ur.ROLE_ID = role.ID
-        AND role.ID = rr.ROLE_ID
-        AND rr.RIGHT_ID = rig.ID
+        WHERE 1 = 1
         <if test="userId != null">
             AND u.ID = #{userId}
+            AND u.ID = ur.USER_ID
+            AND ur.ROLE_ID = role.ID
+            AND role.ID = rr.ROLE_ID
+            AND rr.RIGHT_ID = rig.ID
         </if>
         <if test="rightType != null">
             AND rig.RIGHT_type = #{rightType}

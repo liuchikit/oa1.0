@@ -45,8 +45,6 @@ public class RightServiceImpl extends BaseServiceImpl<Right,Long> implements Rig
         super.mapper = mapper;
     }
 
-
-
     /**
      * 保存
      *
@@ -56,8 +54,6 @@ public class RightServiceImpl extends BaseServiceImpl<Right,Long> implements Rig
     @Override
     @CachePut(value = "redis",key = "'right:save' + #request.getRightCode()")
     public BaseResponse save(RightSaveOrUpdateRequest request) {
-        System.out.println("CachePut 被调用");
-        logger.debug("CachePut 被调用");
         Right right = new Right();
         ConvertUtil.objectToObject(request,right,true,true,true);
         return save(right);
@@ -72,7 +68,6 @@ public class RightServiceImpl extends BaseServiceImpl<Right,Long> implements Rig
     @Override
     @CachePut(value = "redis",key = "'right:save' + #request.getRightCode()")
     public BaseResponse update(RightSaveOrUpdateRequest request) {
-        logger.debug("CachePut 被调用");
         Right right = new Right();
         ConvertUtil.objectToObject(request,right,true,false,true);
         return update(right);
@@ -102,16 +97,11 @@ public class RightServiceImpl extends BaseServiceImpl<Right,Long> implements Rig
      * @return
      */
     @Override
-/*
-    @Cacheable(value = "redis",key = "'right:quertRights' + #type")
-*/
+    @Cacheable(value = "redis",key = "'right:' + #type")
     public BaseResponse queryRights(Integer type) {
-        System.out.println("Cacheable 被调用");
-        logger.debug("Cacheable 被调用");
         Session session = SecurityUtils.getSubject().getSession();
         User user = (User)session.getAttribute("user");
         Map map = new HashMap();
-
 
         //查询所有权限
         if(Objects.equals(type,1)){
@@ -134,7 +124,6 @@ public class RightServiceImpl extends BaseServiceImpl<Right,Long> implements Rig
             trees.add(tree);
         }
         return new BaseResponse(trees);
-
     }
 
     private List<TreeViewResponse> querySubRights(Integer type,Long pid,Long userId){
@@ -164,7 +153,7 @@ public class RightServiceImpl extends BaseServiceImpl<Right,Long> implements Rig
      * @param type
      */
     @Override
-    @CacheEvict(value="value",key="'right:clearCache' + #type")
+    @CacheEvict(value="redis",key="'right:clearCache' + #type")
     public void clearCache(Integer type) {
         logger.debug("清空 type：" + type + "的缓存");
     }
