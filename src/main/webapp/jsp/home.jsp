@@ -20,15 +20,25 @@
             <span class="logo-lg">OAS</span>
         </a>
 
+
         <!-- Header Navbar -->
         <nav class="navbar navbar-static-top" role="navigation">
             <!-- Sidebar toggle button-->
             <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                 <span class="sr-only">切换导航</span>
             </a>
+            <div class="navbar-custom-menu pull-left" >
+                <ul id="tabDiv" class="nav nav-pills">
+
+                </ul>
+            </div>
+
+
             <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
+
                 <ul class="nav navbar-nav">
+
                     <!-- Messages: style can be found in dropdown.less-->
                     <li class="dropdown messages-menu">
                         <!-- Menu toggle button -->
@@ -37,7 +47,7 @@
                             <span class="label label-success">4</span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="header">You have 4 messages</li>
+                            <li class="header">你有4条信息</li>
                             <li>
                                 <!-- inner menu: contains the messages -->
                                 <ul class="menu">
@@ -131,7 +141,7 @@
                             <!-- The user image in the navbar-->
                             <img src="${page}/static/adminLTE/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                            <span class="hidden-xs">${user.name}</span>
+                            <span>${user.name}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
@@ -226,7 +236,9 @@
 
 
     <div class="content-wrapper">
-        <iframe  name="iframe" id="iframe" frameborder="0" style="overflow:visible;" scrolling="yes" frameborder="yes" height="800px" width="100%"></iframe>
+        <div id="tabContentDiv" class="tab-content" width="100%">
+            <%--<iframe  name="iframe" id="iframe" frameborder="0" style="overflow:visible;" scrolling="yes" frameborder="yes" height="800px" width="100%"></iframe>--%>
+        </div>
     </div>
 
     <!-- Main Footer -->
@@ -315,6 +327,10 @@
     <!-- Add the sidebar's background. This div must be placed
          immediately after the control sidebar -->
     <div class="control-sidebar-bg"></div>
+
+    <script type="text/html" id="topNavScript">
+        <li><a href="#">name</a></li>
+    </script>
 </div>
 <!-- ./wrapper -->
 

@@ -336,4 +336,98 @@ var formUtil = function () {
             }
         }
     }
+};
+
+var systemUtil = function () {
+    return {
+        getCurrentPage:function (selector) {
+            var tabContent = $("#tabContentDiv");
+            var tabPage = tabContent.find(".tab-pane.active");
+            return tabPage;
+        },
+
+        openTab:function (tabId,name,url) {
+
+        }
+    }
+};
+
+var tabUtil = function () {
+
+    var topWindow = $(window.parent.document);
+    var tabDiv = topWindow.find("#tabDiv");
+    var tabContentDiv = topWindow.find("#tabContentDiv");
+
+    return{
+
+        /**
+         * 打开tab页
+         * @param id
+         * @param text
+         * @param url
+         */
+        addTab:function (id,text,url) {
+            debugger
+            var me = this;
+            var tabId = "tab-" + id;
+            var tabContentId = "tab-content-" + id;
+
+            //若果tab页已经存在，则直接显示
+            if(this.checkTabExist(tabContentId)){
+                tabDiv.find("#"+ tabId + "").tab("show");
+                return;
+            }
+            tabContentDiv.find(".active").removeClass("active");
+            var tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='fa fa-times-circle'></span></li>";
+            tabTemplate.replace( /#\{href\}/g,tabContentId).replace( /#\{label\}/g, text );
+
+            if(tabContentDiv.find("#"+ tabContentId +"").length > 0){
+                tabContentDiv.find("#"+ tabContentId +"").attr("")
+            }
+
+            $.ajax({
+                url:url,
+                success:function (content) {
+                    var tab = "<li id=" + tabId + "><a href='#" + tabContentId + "' data-toggle='tab'>" + text + "<i class='fa fa-times'></i></a></li>";
+                    tabDiv.append(tab);
+                    //添加tab内容
+                    var tabContent = "<div id='" + tabContentId + "' class='tab-pane active'>" + content +
+                        "</div>";
+                    tabContentDiv.append(tabContent);
+
+                    //给tab标签注册事件
+                    tabDiv.find("i").on("click",function () {
+                        var tabId = $(this).parent().parent().attr("id");
+                        homePage().closeTab(tabId);
+                    });
+                    tabDiv.tab("refresh");
+                },
+            });
+        },
+
+        /**
+         * 关闭tab页
+         */
+        closeTab:function (tabId) {
+            var tabContentId = tabDiv.find("#"+ tabId +"").find("a").attr("href").replace(/#/,"");
+            tabDiv.find("#" + tabId + "").remove();
+            tabContentDiv.find("#" + tabContentId + "").remove();
+        },
+
+        /**
+         * 检查tab页是否存在
+         * @param tabContentId
+         * @returns {boolean}
+         */
+        checkTabExist:function (tabContentId) {
+            return tabContentDiv.find("#" + tabContentId + "").length > 0;
+        },
+
+        /**
+         * 加载按钮监听器
+         */
+        loadBtnListener:function () {
+
+        }
+    }
 }
