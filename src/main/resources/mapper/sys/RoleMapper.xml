@@ -14,4 +14,32 @@
             (#{roleId},#{item})
         </foreach>
     </insert>
+
+    <select id="queryUsersByRoleId" parameterType="java.util.Map" resultType="User">
+        SELECT u.* FROM
+        TB_USER u,TB_USER_ROLE ur,TB_ROLE r
+        WHERE 1 = 1
+        AND r.ID = #{roleId}
+        AND ur.USER_ID = u.ID
+        <if test="type != null and type == 1">
+            AND ur.ROLE_ID = r.ID
+        </if>
+        <if test="type != null and type == 2">
+            AND ur.ROLE_ID != r.ID
+        </if>
+    </select>
+
+    <insert id="relateUsers" parameterType="java.util.Map">
+        INSERT TB_USER_ROLE(ROLE_ID,USER_ID)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{roleId},#{item})
+        </foreach>
+    </insert>
+
+    <delete id="unrelateUsers" parameterType="java.util.Map">
+        DELETE FROM TB_USER_ROLE ur
+        WHERE ur.ROLE_ID = #{roleId}
+        AND ur.USER_ID IN #{list}
+    </delete>
 </mapper>

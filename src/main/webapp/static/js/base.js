@@ -366,8 +366,7 @@ var tabUtil = function () {
          * @param text
          * @param url
          */
-        addTab:function (id,text,url) {
-            debugger
+        addTab:function (id,text,url,tabData) {
             var me = this;
             var tabId = "tab-" + id;
             var tabContentId = "tab-content-" + id;
@@ -391,7 +390,7 @@ var tabUtil = function () {
                     var tab = "<li id=" + tabId + "><a href='#" + tabContentId + "' data-toggle='tab'>" + text + "<i class='fa fa-times'></i></a></li>";
                     tabDiv.append(tab);
                     //添加tab内容
-                    var tabContent = "<div id='" + tabContentId + "' class='tab-pane active'>" + content +
+                    var tabContent = "<div id='" + tabContentId + "' class='tab-pane active' tabData='"+ tabData +"'>" + content +
                         "</div>";
                     tabContentDiv.append(tabContent);
 
@@ -403,6 +402,15 @@ var tabUtil = function () {
                     tabDiv.tab("refresh");
                 },
             });
+        },
+
+        /**
+         * 获取tab页传值
+         */
+        getTabData:function () {
+            var tabData = tabContentDiv.find(".tab-pane.active").attr("tabdata");
+            tabData = JSON.parse(tabData);
+            return tabData;
         },
 
         /**
