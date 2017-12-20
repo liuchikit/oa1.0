@@ -11,7 +11,7 @@ $(function () {
     }
 
     function loadRightTree() {
-        ajaxUtil().get("/sys/right/queryAllRights",null,function (response) {
+        ajaxUtil().get("/sys/right/queryRights","type=1",function (response) {
             if(response.success){
                 var treeData = response.data;
                 var tree = page.find("#rightTree");

@@ -1,6 +1,7 @@
 package com.liuchikit.mapper.sys;
 
 import com.liuchikit.entity.sys.Right;
+import com.liuchikit.entity.sys.RightVO;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -11,5 +12,5 @@ import java.util.Map;
 public interface RightMapper extends Mapper<Right> {
 
 
-    List<Right> queryRights(Map map);
+    List<RightVO> queryRights(Map map);
 }

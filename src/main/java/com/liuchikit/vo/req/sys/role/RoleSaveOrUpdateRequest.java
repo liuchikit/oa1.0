@@ -1,4 +1,4 @@
-package com.liuchikit.vo.req.sys;
+package com.liuchikit.vo.req.sys.role;
 
 import com.liuchikit.vo.req.BaseRequest;
 import lombok.Data;

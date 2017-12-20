@@ -2,6 +2,7 @@ package com.liuchikit.service.sys;
 
 import com.liuchikit.entity.sys.Right;
 import com.liuchikit.service.BaseService;
+import com.liuchikit.vo.req.sys.right.RightQueryRequest;
 import com.liuchikit.vo.req.sys.right.RightSaveOrUpdateRequest;
 import com.liuchikit.vo.res.BaseResponse;
 
@@ -35,10 +36,10 @@ public interface RightService extends BaseService<Right,Long>{
 
     /**
      * 查询权限
-     * @param type
+     * @param request
      * @return
      */
-    BaseResponse queryRights(Integer type);
+    BaseResponse queryRights(RightQueryRequest request);
 
     /**
      * 根据type清空缓存

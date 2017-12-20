@@ -10,9 +10,6 @@
     baseUrl = "";
 </script>
 
-
-
-
 <%--AdminLTE start--%>
 <!-- Tell the browser to be responsive to screen width -->
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">

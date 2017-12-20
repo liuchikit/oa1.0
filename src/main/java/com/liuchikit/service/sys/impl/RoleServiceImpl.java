@@ -4,11 +4,13 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.liuchikit.constant.ResponseMsg;
 import com.liuchikit.entity.sys.Role;
+import com.liuchikit.mapper.sys.RoleMapper;
 import com.liuchikit.service.BaseServiceImpl;
 import com.liuchikit.service.sys.RoleService;
 import com.liuchikit.util.ConvertUtil;
-import com.liuchikit.vo.req.sys.RolePageRequest;
-import com.liuchikit.vo.req.sys.RoleSaveOrUpdateRequest;
+import com.liuchikit.vo.req.sys.role.RolePageRequest;
+import com.liuchikit.vo.req.sys.role.RoleRelateRightRequest;
+import com.liuchikit.vo.req.sys.role.RoleSaveOrUpdateRequest;
 import com.liuchikit.vo.res.BasePageResponse;
 import com.liuchikit.vo.res.BaseResponse;
 import com.liuchikit.vo.res.sys.RolePageResponse;
@@ -17,8 +19,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author liuchikit
@@ -29,7 +30,7 @@ import java.util.List;
 public class RoleServiceImpl extends BaseServiceImpl<Role,Long> implements RoleService {
 
     @Resource
-    private Mapper<Role> mapper;
+    private RoleMapper mapper;
 
     @Resource(name = "roleMapper")
     @Override
@@ -110,5 +111,25 @@ public class RoleServiceImpl extends BaseServiceImpl<Role,Long> implements RoleS
             return new BaseResponse<>(response);
         }
         return new BaseResponse<>(false, ResponseMsg.GET_FAIL.getMsg());
+    }
+
+    /**
+     * 绑定权限
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public BaseResponse relateRights(RoleRelateRightRequest request) {
+        //先解绑所有权限
+        int result = mapper.unrelateRoleAllRightByRoleId(request.getRoleId());
+        List<Long> rightIds = Arrays.asList(request.getRightIds());
+
+        //绑定权限
+        Map map = new HashMap();
+        map.put("roleId",request.getRoleId());
+        map.put("list",rightIds);
+        mapper.relateRights(map);
+        return new BaseResponse(true,"操作成功");
     }
 }

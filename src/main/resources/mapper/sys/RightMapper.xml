@@ -2,17 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.liuchikit.mapper.sys.RightMapper" >
 
-    <select id="queryRights"  parameterType="java.util.Map" resultType="Right">
-        SELECT DISTINCT rig.*
-        FROM TB_USER u,TB_USER_ROLE ur,TB_ROLE role,TB_ROLE_RIGHT rr,TB_RIGHT rig
-        WHERE 1 = 1
+    <select id="queryRights"  parameterType="java.util.Map" resultType="RightVO">
+        SELECT rig.*,u.ID userId,role.ID roleId
+        FROM TB_RIGHT rig
+        LEFT JOIN TB_ROLE_RIGHT rr ON rr.RIGHT_ID = rig.ID
+        LEFT JOIN TB_ROLE role ON role.ID = rr.ROLE_ID
+        <if test="roleId != null">
+            AND role.ID = #{roleId}
+        </if>
+        LEFT JOIN TB_USER_ROLE ur ON ur.ROLE_ID = role.ID
+        LEFT JOIN TB_USER u ON u.ID = ur.USER_ID
         <if test="userId != null">
             AND u.ID = #{userId}
-            AND u.ID = ur.USER_ID
-            AND ur.ROLE_ID = role.ID
-            AND role.ID = rr.ROLE_ID
-            AND rr.RIGHT_ID = rig.ID
         </if>
+        WHERE 1 = 1
+
         <if test="rightType != null">
             AND rig.RIGHT_type = #{rightType}
         </if>
@@ -22,6 +26,7 @@
         <if test="pid != null">
             AND rig.PID = #{pid}
         </if>
+        GROUP BY rig.ID
         ORDER BY rig.SORT ASC
     </select>
 

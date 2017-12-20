@@ -90,6 +90,14 @@
         </section>
 
     </script>
+
+    <scritp id="relateRightDiv" type="text/html">
+        <section class="content">
+            <div class="box">
+                <div id="rightTree"></div>
+            </div>
+        </section>
+    </scritp>
 </section>
 
 <script type="text/javascript" src="/static/js/role/roleList.js"></script>

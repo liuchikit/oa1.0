@@ -1,8 +1,9 @@
 package com.liuchikit.controller.sys;
 
 import com.liuchikit.service.sys.RoleService;
-import com.liuchikit.vo.req.sys.RolePageRequest;
-import com.liuchikit.vo.req.sys.RoleSaveOrUpdateRequest;
+import com.liuchikit.vo.req.sys.role.RolePageRequest;
+import com.liuchikit.vo.req.sys.role.RoleRelateRightRequest;
+import com.liuchikit.vo.req.sys.role.RoleSaveOrUpdateRequest;
 import com.liuchikit.vo.res.BasePageResponse;
 import com.liuchikit.vo.res.BaseResponse;
 import com.liuchikit.vo.res.sys.RoleResponse;
@@ -59,5 +60,15 @@ public class RoleController {
     @RequestMapping(value = "",method = RequestMethod.DELETE)
     public BaseResponse deleteById(Long id){
         return roleService.deleteById(id);
+    }
+
+    /**
+     * 绑定权限
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/relateRights",method = RequestMethod.POST)
+    public BaseResponse relateRights(RoleRelateRightRequest request){
+        return roleService.relateRights(request);
     }
 }

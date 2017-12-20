@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liuchikit.mapper.sys.RoleMapper" >
+
+    <delete id="unrelateRoleAllRightByRoleId" parameterType="java.lang.Long">
+        DELETE FROM TB_ROLE_RIGHT
+        WHERE ROLE_ID = #{roleId}
+    </delete>
+
+    <insert id="relateRights" parameterType="java.util.Map">
+        INSERT INTO TB_ROLE_RIGHT(ROLE_ID,RIGHT_ID)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{roleId},#{item})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,6 +1,7 @@
 package com.liuchikit.controller.sys;
 
 import com.liuchikit.service.sys.RightService;
+import com.liuchikit.vo.req.sys.right.RightQueryRequest;
 import com.liuchikit.vo.req.sys.right.RightSaveOrUpdateRequest;
 import com.liuchikit.vo.res.BaseResponse;
 import com.liuchikit.vo.res.sys.RoleResponse;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -58,14 +60,6 @@ public class RightController {
         return rightService.save(request);
     }
 
-    /**
-     * 查询菜单树
-     * @return
-     */
-    @RequestMapping(value = "/queryMenus",method = RequestMethod.GET)
-    public BaseResponse<List<TreeViewResponse>> queryMenus(){
-        return rightService.queryRights(2);
-    }
 
     /**
      * 更新
@@ -77,17 +71,19 @@ public class RightController {
         return rightService.update(request);
     }
 
-    @RequestMapping(value = "/queryAllRights",method = RequestMethod.GET)
-    public BaseResponse queryAllRights(){
-        return rightService.queryRights(1);
-    }
-
     @RequestMapping(value = "clearCache",method = RequestMethod.GET)
     public void clearCache(Integer type){
         rightService.clearCache(type);
     }
 
-
-
+    /**
+     * 根据type查询权限
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/queryRights",method = RequestMethod.GET)
+    public BaseResponse queryRights(RightQueryRequest request){
+        return rightService.queryRights(request);
+    }
 
 }

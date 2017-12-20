@@ -2,11 +2,13 @@ package com.liuchikit.service.sys.impl;
 
 import com.liuchikit.constant.ResponseMsg;
 import com.liuchikit.entity.sys.Right;
+import com.liuchikit.entity.sys.RightVO;
 import com.liuchikit.entity.sys.User;
 import com.liuchikit.mapper.sys.RightMapper;
 import com.liuchikit.service.BaseServiceImpl;
 import com.liuchikit.service.sys.RightService;
 import com.liuchikit.util.ConvertUtil;
+import com.liuchikit.vo.req.sys.right.RightQueryRequest;
 import com.liuchikit.vo.req.sys.right.RightSaveOrUpdateRequest;
 import com.liuchikit.vo.res.BaseResponse;
 import com.liuchikit.vo.res.sys.right.RightResponse;
@@ -93,55 +95,105 @@ public class RightServiceImpl extends BaseServiceImpl<Right,Long> implements Rig
     /**
      * 查询权限
      *
-     * @param type 1：查询所有权限 2：查询菜单树
+     * @param request
      * @return
      */
     @Override
-    @Cacheable(value = "redis",key = "'right:' + #type")
-    public BaseResponse queryRights(Integer type) {
+    @Cacheable(value = "redis",key = "'right:' + #request")
+    public BaseResponse queryRights(RightQueryRequest request) {
         Session session = SecurityUtils.getSubject().getSession();
         User user = (User)session.getAttribute("user");
         Map map = new HashMap();
 
         //查询所有权限
-        if(Objects.equals(type,1)){
+        if(Objects.equals(request.getType(),1)){
             map.put("level",0);
         }
         //查询菜单树
-        if(Objects.equals(type,2)){
+        if(Objects.equals(request.getType(),2)){
             map.put("level",1);
             map.put("userId",user.getId());
             map.put("rightType",1);
         }
-        List<Right> rights = mapper.queryRights(map);
+        //查询用户所有权限
+        if(Objects.equals(request.getType(),3)){
+            map.put("level",0);
+            //若有传入用户ID，则根据用户ID查询权限，否则根据当前登录用户ID查询权限
+            map.put("userId",request.getUserId() == null ? user.getId() : request.getUserId());
+        }
+        //查询角色所有权限
+        if(Objects.equals(request.getType(),4)){
+            map.put("level",0);
+            map.put("roleId",request.getRoleId());
+        }
+
+        List<RightVO> rights = mapper.queryRights(map);
         List<TreeViewResponse> trees = new ArrayList<>();
-        for(Right right : rights){
+        for(RightVO right : rights){
             TreeViewResponse tree = new TreeViewResponse();
             tree.setId(right.getId());
             tree.setText(right.getRightName());
             tree.setUrl(right.getRightCode());
-            tree.setNodes(querySubRights(type,right.getId(),user.getId()));
+
+            //查询用户权限时设置勾选状态
+            if(Objects.equals(request.getType(),3)){
+                if(!Objects.equals(right.getUserID(),null)){
+                    tree.setChecked(1);
+                }
+            }
+            //查询角色权限时设置勾选状态
+            if(Objects.equals(request.getType(),4)){
+                if(!Objects.equals(right.getRoleId(),null)){
+                    tree.setChecked(1);
+                }
+            }
+            //设置父权限ID
+            request.setPid(right.getId());
+            tree.setNodes(querySubRights(request));
             trees.add(tree);
         }
         return new BaseResponse(trees);
     }
 
-    private List<TreeViewResponse> querySubRights(Integer type,Long pid,Long userId){
+    private List<TreeViewResponse> querySubRights(RightQueryRequest request){
         Map map = new HashMap();
-        if(Objects.equals(type,2)){
-            map.put("userId",userId);
+        //查询菜单
+        if(Objects.equals(request.getType(),2)){
+            map.put("userId",request.getUserId());
             map.put("rightType",1);
         }
+        //查询用户权限
+        if(Objects.equals(request.getType(),3)){
+            map.put("userId",request.getUserId());
+        }
+        //查询角色权限
+        if(Objects.equals(request.getType(),4)){
+            map.put("roleId",request.getRoleId());
+        }
 
-        map.put("pid",pid);
-        List<Right> rights =  mapper.queryRights(map);
+        map.put("pid",request.getPid());
+        List<RightVO> rights =  mapper.queryRights(map);
         List<TreeViewResponse> trees = new ArrayList<>();
-        for(Right right : rights){
+        for(RightVO right : rights){
             TreeViewResponse tree = new TreeViewResponse();
             tree.setId(right.getId());
             tree.setText(right.getRightName());
             tree.setUrl(right.getRightCode());
-            tree.setNodes(querySubRights(type,right.getId(),userId));
+            //查询用户权限时设置勾选状态
+            if(Objects.equals(request.getType(),3)){
+                if(!Objects.equals(right.getUserID(),null)){
+                    tree.setChecked(1);
+                }
+            }
+            //查询角色权限时设置勾选状态
+            if(Objects.equals(request.getType(),4)){
+                if(!Objects.equals(right.getRoleId(),null)){
+                    tree.setChecked(1);
+                }
+            }
+            //设置父权限ID
+            request.setPid(right.getId());
+            tree.setNodes(querySubRights(request));
             trees.add(tree);
         }
         return trees;
