@@ -2,9 +2,7 @@ package com.liuchikit.service.sys;
 
 import com.liuchikit.entity.sys.Role;
 import com.liuchikit.service.BaseService;
-import com.liuchikit.vo.req.sys.role.RolePageRequest;
-import com.liuchikit.vo.req.sys.role.RoleRelateRightRequest;
-import com.liuchikit.vo.req.sys.role.RoleSaveOrUpdateRequest;
+import com.liuchikit.vo.req.sys.role.*;
 import com.liuchikit.vo.res.BasePageResponse;
 import com.liuchikit.vo.res.BaseResponse;
 import com.liuchikit.vo.res.sys.RoleResponse;
@@ -53,5 +51,33 @@ public interface RoleService extends BaseService<Role,Long> {
      * @return
      */
     BaseResponse relateRights(RoleRelateRightRequest request);
+
+    /**
+     * 获取已关联用户
+     * @param request
+     * @return
+     */
+    BasePageResponse queryRelatedUsers(RoleRelatedUserPageRequest request);
+
+    /**
+     * 获取未关联用户
+     * @param request
+     * @return
+     */
+    BasePageResponse queryUnrelatedUsers(RoleRelatedUserPageRequest request);
+
+    /**
+     * 关联用户
+     * @param request
+     * @return
+     */
+    BaseResponse relateUsers(RoleRelateUserRequest request);
+
+    /**
+     * 解除关联用户
+     * @param request
+     * @return
+     */
+    BaseResponse unrelateUsers(RoleRelateUserRequest request);
 
 }

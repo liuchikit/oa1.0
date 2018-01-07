@@ -4,17 +4,17 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.liuchikit.constant.ResponseMsg;
 import com.liuchikit.entity.sys.Role;
+import com.liuchikit.entity.sys.User;
 import com.liuchikit.mapper.sys.RoleMapper;
 import com.liuchikit.service.BaseServiceImpl;
 import com.liuchikit.service.sys.RoleService;
 import com.liuchikit.util.ConvertUtil;
-import com.liuchikit.vo.req.sys.role.RolePageRequest;
-import com.liuchikit.vo.req.sys.role.RoleRelateRightRequest;
-import com.liuchikit.vo.req.sys.role.RoleSaveOrUpdateRequest;
+import com.liuchikit.vo.req.sys.role.*;
 import com.liuchikit.vo.res.BasePageResponse;
 import com.liuchikit.vo.res.BaseResponse;
 import com.liuchikit.vo.res.sys.RolePageResponse;
 import com.liuchikit.vo.res.sys.RoleResponse;
+import com.liuchikit.vo.res.sys.user.UserResponse;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -131,5 +131,65 @@ public class RoleServiceImpl extends BaseServiceImpl<Role,Long> implements RoleS
         map.put("list",rightIds);
         mapper.relateRights(map);
         return new BaseResponse(true,"操作成功");
+    }
+
+    /**
+     * 获取已关联用户
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public BasePageResponse queryRelatedUsers(RoleRelatedUserPageRequest request) {
+        Map map = new HashMap();
+        map.put("roleId",request.getRoleId());
+        map.put("type",1);//查找关联用户
+        Page<Object> page = PageHelper.startPage(request.getStart(),
+                request.getLength());
+        List<User> users = mapper.queryUsersByRoleId(map);
+        List<UserResponse> responses = new ArrayList<>(users.size());
+        ConvertUtil.listObjectToListObject(users,responses,UserResponse.class);
+        return new BasePageResponse(request.getDraw(),page.getTotal(),responses);
+    }
+
+    /**
+     * 获取未关联用户
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public BasePageResponse queryUnrelatedUsers(RoleRelatedUserPageRequest request) {
+        Map map = new HashMap();
+        map.put("roleId",request.getRoleId());
+        map.put("type",2);//查找未关联用户
+        Page<Object> page = PageHelper.startPage(request.getStart(),
+                request.getLength());
+        List<User> users = mapper.queryUsersByRoleId(map);
+        List<UserResponse> responses = new ArrayList<>(users.size());
+        ConvertUtil.listObjectToListObject(users,responses,UserResponse.class);
+        return new BasePageResponse(request.getDraw(),page.getTotal(),responses);
+    }
+
+    /**
+     * 关联用户
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public BaseResponse relateUsers(RoleRelateUserRequest request) {
+        return null;
+    }
+
+    /**
+     * 解除关联用户
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public BaseResponse unrelateUsers(RoleRelateUserRequest request) {
+        return null;
     }
 }

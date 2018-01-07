@@ -7,8 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<section id="roleListPage">
-    <div    >
+<section >
+    <div>
         <div class="box">
             <div class="box-header col-md-12">
                 <form id="queryForm" class="form-horizontal">
@@ -38,7 +38,7 @@
                 </form>
             </div>
             <div class="box-body">
-                <table id="roleListTable" class="table table-striped table-bordered" cellspacing="0" width="100%"></table>
+                <table class="table table-striped table-bordered" cellspacing="0" width="100%"></table>
             </div>
         </div>
 
@@ -57,47 +57,7 @@
         </div>
     </script>
 
-    <script id="saveOrUpdateDiv" type="text/html" class="btn-div">
-        <section class="content">
-            <div class="box">
-                <div class="box-body col-md-12">
-                    <form id="saveOrUpdateForm" >
-                        <input type="hidden" name="id">
-                        <div class="row">
-                            <div class="form-group">
-                                <label for="" class="control-label">角色名称</label>
-                                <input name="roleName" class="form-control">
-                            </div>
-                            <div class="form-group ">
-                                <label for="" class="control-label">角色编码</label>
-                                <input name="roleCode" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="" class="control-label">角色描述</label>
-                                <input name="roleDesc" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="" class="control-label">是否有效</label>
-                                <input name="status" class="form-control">
-                            </div>
-
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-        </section>
-
-    </script>
-
-    <scritp id="relateRightDiv" type="text/html">
-        <section class="content">
-            <div class="box">
-                <div id="rightTree"></div>
-            </div>
-        </section>
-    </scritp>
 </section>
 
-<script type="text/javascript" src="/static/js/role/roleList.js"></script>
+<script type="text/javascript" src="/static/js/role/relateUserPage.js"></script>
 

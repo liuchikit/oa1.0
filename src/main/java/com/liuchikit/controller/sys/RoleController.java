@@ -3,6 +3,7 @@ package com.liuchikit.controller.sys;
 import com.liuchikit.service.sys.RoleService;
 import com.liuchikit.vo.req.sys.role.RolePageRequest;
 import com.liuchikit.vo.req.sys.role.RoleRelateRightRequest;
+import com.liuchikit.vo.req.sys.role.RoleRelatedUserPageRequest;
 import com.liuchikit.vo.req.sys.role.RoleSaveOrUpdateRequest;
 import com.liuchikit.vo.res.BasePageResponse;
 import com.liuchikit.vo.res.BaseResponse;
@@ -35,6 +36,15 @@ public class RoleController {
     @RequestMapping(value = "/toRoleList",method = RequestMethod.GET)
     public ModelAndView toRoleList(){
         return new ModelAndView(PATH + "/roleList");
+    }
+
+    /**
+     * 跳转到关联用户页面
+     * @return
+     */
+    @RequestMapping(value = "/toRelateUserPage",method = RequestMethod.GET)
+    public ModelAndView toRelateUserPage(){
+        return new ModelAndView(PATH + "/relateUserPage");
     }
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
@@ -70,5 +80,25 @@ public class RoleController {
     @RequestMapping(value = "/relateRights",method = RequestMethod.POST)
     public BaseResponse relateRights(RoleRelateRightRequest request){
         return roleService.relateRights(request);
+    }
+
+    /**
+     * 查找关联用户
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/queryRelatedUsers",method = RequestMethod.GET)
+    public BasePageResponse queryRelatedUsers(RoleRelatedUserPageRequest request){
+        return roleService.queryRelatedUsers(request);
+    }
+
+    /**
+     * 查找未关联用户
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/queryUnrelatedUsers",method = RequestMethod.GET)
+    public BasePageResponse queryUnrelatedUsers(RoleRelatedUserPageRequest request){
+        return roleService.queryUnrelatedUsers(request);
     }
 }
