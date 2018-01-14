@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="index.jsp"%>
-<script src="${ctx}/static/js/login.js"></script>
+<script src="${page}/static/js/login.js"></script>
 <style>
     #loginDiv{
         margin-top: 10%;

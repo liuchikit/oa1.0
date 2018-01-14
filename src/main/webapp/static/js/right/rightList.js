@@ -16,13 +16,17 @@ $(function () {
                 var treeData = response.data;
                 var tree = page.find("#rightTree");
                 tree.treeview({
+                    data:treeData,
+                    showCheckbox:true,
+                })
+                /*tree.treeview({
                     color:"white",
                     backColor:"#1E282C",
                     data: treeData,
                     onhoverColor:"#1E282C",
                     showBorder:false,
                     showCheckbox:true,
-                });
+                });*/
             }
 
             tree.on('nodeSelected', function(event, data) {

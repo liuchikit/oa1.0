@@ -367,7 +367,6 @@ var tabUtil = function () {
          * @param url
          */
         addTab:function (id,text,url) {
-            debugger
             var me = this;
             var tabId = "tab-" + id;
             var tabContentId = "tab-content-" + id;
@@ -398,7 +397,7 @@ var tabUtil = function () {
                     //给tab标签注册事件
                     tabDiv.find("i").on("click",function () {
                         var tabId = $(this).parent().parent().attr("id");
-                        homePage().closeTab(tabId);
+                        tabUtil().closeTab(tabId);
                     });
                     tabDiv.tab("refresh");
                 },
