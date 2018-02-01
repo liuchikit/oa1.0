@@ -37,6 +37,10 @@
     <listener>
         <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
     </listener>
+    <!--socket监听器-->
+    <listener>
+        <listener-class>com.zhumian.socket.ServerSocketListener</listener-class>
+    </listener>
 
     <!-- shiro过滤器 -->
     <filter>
@@ -91,7 +95,7 @@
     <!--过滤空字符串-->
     <filter>
         <filter-name>sessionFilter</filter-name>
-        <filter-class>com.liuchikit.filter.EmptyStringFilter</filter-class>
+        <filter-class>com.zhumian.filter.EmptyStringFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>sessionFilter</filter-name>

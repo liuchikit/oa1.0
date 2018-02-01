@@ -14,7 +14,7 @@
     </bean>
 
     <!-- 項目自定义的Realm -->
-    <bean id="loginRealm" class="com.liuchikit.realm.LoginRealm">
+    <bean id="loginRealm" class="com.zhumian.realm.LoginRealm">
         <property name="cacheManager" ref="memoryConstrainedCacheManager" />
     </bean>
 

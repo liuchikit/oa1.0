@@ -49,7 +49,7 @@
                 <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
                     <property name="name" value="codeCache"/>
                 </bean>
-                <bean class="com.liuchikit.util.RedisCache">
+                <bean class="com.zhumian.util.RedisCache">
                     <property name="redisTemplate" ref="redisTemplate" />
                     <property name="name" value="redis"/>
                 </bean>

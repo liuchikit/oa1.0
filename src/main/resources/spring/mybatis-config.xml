@@ -37,7 +37,7 @@
     <!-- 设置别名 -->
     <typeAliases>
         <!-- 扫描请求包和相应包，生成对应别名. -->
-        <package name="com.liuchikit.entity"/>
+        <package name="com.zhumian.entity"/>
     </typeAliases>
 
     <!-- mybatis分页插件 版本5.0.0 -->
